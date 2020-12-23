@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 
 // Connection Less(UDP) Echo server
-// UDP has only itervative server on concurrent server
+// UDP has only itervative server no concurrent server
 // Order of function calls : socket() -> bind() -> recvfrom() -> sendto()
 
 void str_echo(int sockfd,struct sockaddr* cli_address, int clilen)
