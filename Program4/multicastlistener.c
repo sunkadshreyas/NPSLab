@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 
 	/**** MODIFICATION TO ORIGINAL */
     /* allow multiple sockets to use the same PORT number */
+	// local port can be reused using SO_REUSEADDR
 	if (setsockopt(fd,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes)) < 0)
 	{
 		perror("Reusing ADDR failed");
@@ -51,8 +52,9 @@ int main(int argc, char *argv[])
     }
 
      /* use setsockopt() to request that the kernel join a multicast group */
-	mreq.imr_multiaddr.s_addr=inet_addr(HELLO_GROUP);
-	mreq.imr_interface.s_addr=htonl(INADDR_ANY);
+	mreq.imr_multiaddr.s_addr=inet_addr(HELLO_GROUP); // IPv4 multicast address
+	mreq.imr_interface.s_addr=htonl(INADDR_ANY); // IPv4 address of local interface
+	// join the multicase group using IP_ADD_MEMBERSHIP
 	if (setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq)) < 0) 
 	{
 		perror("setsockopt");
